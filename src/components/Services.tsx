@@ -1,0 +1,74 @@
+import { motion } from "motion/react";
+import { Zap, Globe, Layout, Code } from "lucide-react";
+
+const TICKER_ITEMS = [
+  { label: "SPICY FOOD LOVER", Icon: Zap },
+  { label: "HARDCORE SURFING", Icon: Globe },
+  { label: "VIBE CODER", Icon: Layout },
+  { label: "PHOTOGRAPHY", Icon: Zap },
+  { label: "COOK", Icon: Globe },
+] as const;
+
+export default function Ticker() {
+  return (
+    <div className="bg-black py-8 -mx-8 overflow-hidden -rotate-2 scale-105 border-y-4 border-black">
+      <div className="animate-marquee">
+        {[...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS].map((item, idx) => (
+          <div key={idx} className="flex items-center gap-4 px-12 text-white transition-all hover:rotate-2 hover:text-brand-pink cursor-default group">
+            <item.Icon className="w-8 h-8 group-hover:scale-110 transition-transform" />
+            <span className="text-3xl font-extrabold uppercase tracking-tighter">{item.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export const Services = () => {
+  return (
+    <section className="py-24 px-8 max-w-7xl mx-auto space-y-16" id="creations">
+      <div className="text-center space-y-4">
+        <h2 className="text-5xl md:text-7xl font-display font-extrabold">
+          一些 <span className="bg-brand-pink text-white px-4 rounded-lg">有趣的创作</span>
+        </h2>
+        <p className="text-gray-500 max-w-2xl mx-auto font-semibold">
+          没有什么比把一个突然冒出来的想法变成现实更酷的事情了。
+        </p>
+      </div>
+
+      <div className="max-w-4xl mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="brutalist-card p-12 md:p-16 flex flex-col items-center text-center space-y-8 bg-gray-50 border-dashed border-4 border-black"
+        >
+          <div className="w-16 h-16 bg-brand-blue border-4 border-black rounded-2xl flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <Zap size={32} className="text-white" />
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-4xl font-extrabold italic">“施工中...”</h3>
+            <p className="text-xl text-gray-600 font-bold max-w-lg mx-auto">
+              这里还在施工中，新的小玩意儿正在路上...
+            </p>
+          </div>
+          <div className="flex gap-4">
+             <div className="h-4 w-4 rounded-full bg-brand-pink border-2 border-black" />
+             <div className="h-4 w-4 rounded-full bg-brand-yellow border-2 border-black" />
+             <div className="h-4 w-4 rounded-full bg-brand-blue border-2 border-black" />
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="max-w-4xl mx-auto bg-white border-4 border-black rounded-3xl p-6 flex items-center gap-6 shadow-[8px_8px_0px_0px_rgba(108,99,255,1)] hover:shadow-none transition-all cursor-default group">
+        <div className="bg-brand-yellow p-4 rounded-2xl border-4 border-black group-hover:rotate-12 transition-transform">
+          <Code size={32} className="text-black" />
+        </div>
+        <div className="space-y-1">
+          <h4 className="text-xl font-extrabold uppercase">最近在捣鼓</h4>
+          <p className="text-gray-600 font-bold text-lg">盲审通过，准备毕业中</p>
+        </div>
+      </div>
+    </section>
+  );
+};
