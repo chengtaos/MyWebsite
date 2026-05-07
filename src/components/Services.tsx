@@ -1,6 +1,8 @@
 import { motion } from "motion/react";
-import { Zap, Globe, Layout, Code, ExternalLink } from "lucide-react";
+import { Zap, Globe, Layout, Code, ExternalLink, Pencil, Lightbulb, Briefcase } from "lucide-react";
 import { projects } from "../data/projects.ts";
+import { blogs } from "../data/blogs.ts";
+import { ideas } from "../data/ideas.ts";
 
 const TICKER_ITEMS = [
   { label: "SPICY FOOD LOVER", Icon: Zap },
@@ -11,6 +13,8 @@ const TICKER_ITEMS = [
 ] as const;
 
 const MARQUEE_ITEMS = [...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS];
+
+const featuredProjects = projects.filter((p) => p.featured);
 
 export default function Ticker() {
   return (
@@ -27,11 +31,40 @@ export default function Ticker() {
   );
 }
 
-const featuredProjects = projects.filter((p) => p.featured);
+const EmptyPlaceholder = () => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    className="brutalist-card p-12 md:p-16 flex flex-col items-center text-center space-y-8 bg-gray-50 border-dashed border-4 border-black"
+  >
+    <div className="w-16 h-16 bg-brand-blue border-4 border-black rounded-2xl flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+      <Zap size={32} className="text-white" />
+    </div>
+    <div className="space-y-4">
+      <h3 className="text-4xl font-extrabold italic">"施工中..."</h3>
+      <p className="text-xl text-gray-600 font-bold max-w-lg mx-auto">
+        这里还在施工中，新的小玩意儿正在路上...
+      </p>
+    </div>
+    <div className="flex gap-4">
+      <div className="h-4 w-4 rounded-full bg-brand-pink border-2 border-black" />
+      <div className="h-4 w-4 rounded-full bg-brand-yellow border-2 border-black" />
+      <div className="h-4 w-4 rounded-full bg-brand-blue border-2 border-black" />
+    </div>
+  </motion.div>
+);
+
+const SectionHeader = ({ icon: Icon, title }: { icon: React.ComponentType<{ size?: number; className?: string }>; title: string }) => (
+  <div className="flex items-center gap-3">
+    <Icon size={28} className="text-black shrink-0" />
+    <h3 className="text-3xl font-extrabold">{title}</h3>
+  </div>
+);
 
 export const Services = () => {
   return (
-    <section className="py-24 px-8 max-w-7xl mx-auto space-y-16" id="creations">
+    <section className="py-24 px-8 max-w-7xl mx-auto space-y-20" id="creations">
       <div className="text-center space-y-4">
         <h2 className="text-5xl md:text-7xl font-display font-extrabold">
           一些 <span className="bg-brand-pink text-white px-4 rounded-lg">有趣的创作</span>
@@ -41,63 +74,130 @@ export const Services = () => {
         </p>
       </div>
 
-      {featuredProjects.length > 0 ? (
-        <div className="flex flex-wrap justify-center gap-8 max-w-4xl mx-auto">
-          {featuredProjects.map((project, idx) => (
-            <motion.a
-              key={project.title}
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="brutalist-card p-8 flex flex-col justify-between gap-6 cursor-pointer group hover:bg-brand-yellow/20 w-full md:w-[calc(50%-1rem)]"
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-2xl font-extrabold group-hover:underline">
-                    {project.title}
-                  </h3>
-                  <ExternalLink
-                    size={20}
-                    className="text-gray-400 group-hover:text-black transition-colors shrink-0"
-                  />
+      {/* 作品集 */}
+      <div className="space-y-8">
+        <SectionHeader icon={Briefcase} title="作品集" />
+        {featuredProjects.length > 0 ? (
+          <div className="flex flex-wrap justify-center gap-8">
+            {featuredProjects.map((project, idx) => (
+              <motion.a
+                key={project.title}
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="brutalist-card p-8 flex flex-col justify-between gap-6 cursor-pointer group hover:bg-brand-yellow/20 w-full md:w-[calc(50%-1rem)]"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-2xl font-extrabold group-hover:underline">
+                      {project.title}
+                    </h4>
+                    <ExternalLink
+                      size={20}
+                      className="text-gray-400 group-hover:text-black transition-colors shrink-0"
+                    />
+                  </div>
+                  <p className="text-gray-600 font-semibold text-lg leading-relaxed">
+                    {project.description}
+                  </p>
                 </div>
-                <p className="text-gray-600 font-semibold text-lg leading-relaxed">
-                  {project.description}
-                </p>
-              </div>
-            </motion.a>
-          ))}
-        </div>
-      ) : (
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="brutalist-card p-12 md:p-16 flex flex-col items-center text-center space-y-8 bg-gray-50 border-dashed border-4 border-black"
-          >
-            <div className="w-16 h-16 bg-brand-blue border-4 border-black rounded-2xl flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-              <Zap size={32} className="text-white" />
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-4xl font-extrabold italic">“施工中...”</h3>
-              <p className="text-xl text-gray-600 font-bold max-w-lg mx-auto">
-                这里还在施工中，新的小玩意儿正在路上...
-              </p>
-            </div>
-            <div className="flex gap-4">
-              <div className="h-4 w-4 rounded-full bg-brand-pink border-2 border-black" />
-              <div className="h-4 w-4 rounded-full bg-brand-yellow border-2 border-black" />
-              <div className="h-4 w-4 rounded-full bg-brand-blue border-2 border-black" />
-            </div>
-          </motion.div>
+              </motion.a>
+            ))}
+          </div>
+        ) : (
+          <EmptyPlaceholder />
+        )}
+      </div>
+
+      {/* 博客 */}
+      {blogs.length > 0 && (
+        <div className="space-y-8">
+          <SectionHeader icon={Pencil} title="博客" />
+          <div className="flex flex-wrap justify-center gap-8">
+            {blogs.map((blog, idx) => {
+              const CardWrapper = blog.link ? "a" : "div";
+              const cardProps = blog.link
+                ? { href: blog.link, target: "_blank", rel: "noopener noreferrer" }
+                : {};
+
+              return (
+                <motion.div
+                  key={blog.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="w-full md:w-[calc(50%-1rem)]"
+                >
+                  <CardWrapper
+                    {...cardProps}
+                    className={`brutalist-card p-8 flex flex-col justify-between gap-6 ${
+                      blog.link ? "cursor-pointer group hover:bg-brand-blue/10" : ""
+                    }`}
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-2xl font-extrabold group-hover:underline">
+                          {blog.title}
+                        </h4>
+                        {blog.link && (
+                          <ExternalLink
+                            size={20}
+                            className="text-gray-400 group-hover:text-black transition-colors shrink-0"
+                          />
+                        )}
+                      </div>
+                      <p className="text-gray-600 font-semibold text-lg leading-relaxed">
+                        {blog.summary}
+                      </p>
+                    </div>
+                    <span className="text-sm font-bold uppercase tracking-wide text-gray-400">
+                      {blog.date}
+                    </span>
+                  </CardWrapper>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       )}
 
+      {/* 有趣想法 */}
+      {ideas.length > 0 && (
+        <div className="space-y-8">
+          <SectionHeader icon={Lightbulb} title="有趣想法" />
+          <div className="flex flex-wrap justify-center gap-6">
+            {ideas.map((idea, idx) => (
+              <motion.div
+                key={`${idea.content}-${idx}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="brutalist-card p-6 flex items-start gap-4 w-full md:w-[calc(50%-0.75rem)] hover:bg-brand-pink/5 transition-colors"
+              >
+                <div className="w-8 h-8 bg-brand-yellow border-2 border-black rounded-lg flex items-center justify-center shrink-0">
+                  <Lightbulb size={16} className="text-black" />
+                </div>
+                <div className="space-y-2">
+                  <p className="text-gray-700 font-semibold text-lg leading-relaxed">
+                    {idea.content}
+                  </p>
+                  <span className="text-sm font-bold uppercase tracking-wide text-gray-400">
+                    {idea.date}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 最近在捣鼓 */}
       <div className="max-w-4xl mx-auto bg-white border-4 border-black rounded-3xl p-6 flex items-center gap-6 shadow-[8px_8px_0px_0px_rgba(108,99,255,1)] hover:shadow-none transition-all cursor-default group">
         <div className="bg-brand-yellow p-4 rounded-2xl border-4 border-black group-hover:rotate-12 transition-transform">
           <Code size={32} className="text-black" />

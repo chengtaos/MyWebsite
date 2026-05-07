@@ -30,7 +30,9 @@ src/
 ├── App.tsx                  # 根组件 — 标签页状态管理 + 页面路由
 ├── index.css                # Tailwind 配置、品牌主题色、粗野主义工具类
 ├── data/
-│   └── projects.ts          # 作品集数据（添加新作品只需编辑此文件）
+│   ├── projects.ts          # 作品集数据
+│   ├── blogs.ts             # 博客数据
+│   └── ideas.ts             # 有趣想法数据
 └── components/
     ├── Navbar.tsx           # 固定导航栏（首页 / 作品集 / 关于我）
     ├── Hero.tsx             # 首屏区域 — 标题、CTA 按钮、头像
@@ -42,9 +44,11 @@ public/
 └── fig2.png                 # 首页头像插图
 ```
 
-## 添加作品
+## 添加内容
 
-在 `src/data/projects.ts` 中按以下接口添加新条目：
+首页「一些有趣的创作」区域包含三个子区块：作品集、博客、有趣想法。每个区块的数据独立管理。
+
+### 作品集 — `src/data/projects.ts`
 
 ```ts
 export interface Project {
@@ -77,6 +81,30 @@ export const projects: Project[] = [
 ```
 
 页面会自动根据 `status` 展示对应的卡片样式，`featured: true` 的作品会同时出现在首页和作品集页。
+
+### 博客 — `src/data/blogs.ts`
+
+```ts
+export interface Blog {
+  title: string;
+  date: string;          // "2026-05-07"
+  summary: string;
+  link?: string;         // 可选外部链接
+}
+```
+
+设置 `link` 后卡片可点击跳转，不设置则只展示文字内容。
+
+### 有趣想法 — `src/data/ideas.ts`
+
+```ts
+export interface Idea {
+  content: string;
+  date: string;
+}
+```
+
+短想法以简洁卡片样式展示。三个区块中数据为空的会自动隐藏。
 
 ## 路由设计
 
