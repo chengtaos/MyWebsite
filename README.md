@@ -29,16 +29,52 @@ src/
 ├── main.tsx                 # 应用入口
 ├── App.tsx                  # 根组件 — 标签页状态管理 + 页面路由
 ├── index.css                # Tailwind 配置、品牌主题色、粗野主义工具类
+├── data/
+│   └── projects.ts          # 作品集数据（添加新作品只需编辑此文件）
 └── components/
     ├── Navbar.tsx           # 固定导航栏（首页 / 作品集 / 关于我）
     ├── Hero.tsx             # 首屏区域 — 标题、CTA 按钮、头像
     ├── Services.tsx         # 跑马灯滚动条 + 服务展示区
     ├── AboutSection.tsx     # 关于我 + 个人态度区
-    └── Portfolio.tsx        # 作品集页（施工中）
+    └── Portfolio.tsx        # 作品集页
 public/
 ├── fig1.png                 # 关于我页面插图
 └── fig2.png                 # 首页头像插图
 ```
+
+## 添加作品
+
+在 `src/data/projects.ts` 中按以下接口添加新条目：
+
+```ts
+export interface Project {
+  title: string;              // 作品名称
+  description: string;        // 一句话描述
+  link: string;               // 作品链接（GitHub / 线上地址）
+  status: "online" | "wip";   // online=已上线显示为可点击卡片，wip=显示为施工中占位
+}
+```
+
+**示例：**
+
+```ts
+export const projects: Project[] = [
+  {
+    title: "What2EatToday",
+    description: "今天吃什么？一个帮你解决日常选择困难的小工具。",
+    link: "https://github.com/chengtaos/What2EatToday",
+    status: "online",
+  },
+  {
+    title: "新项目",
+    description: "这是我正在做的一个新东西。",
+    link: "https://github.com/chengtaos/new-project",
+    status: "wip",
+  },
+];
+```
+
+页面会自动根据 `status` 展示对应的卡片样式。
 
 ## 路由设计
 
