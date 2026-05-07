@@ -79,6 +79,7 @@ const Hero = ({ onPortfolioClick }: HeroProps) => {
               alt="汪汪队记大过"
               className="w-full h-full object-cover bg-brand-yellow"
               referrerPolicy="no-referrer"
+              loading="lazy"
             />
           </div>
         </div>

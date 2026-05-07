@@ -36,7 +36,7 @@ const Footer = () => (
   </footer>
 );
 
-const Home = ({ onPortfolioClick }: { onPortfolioClick: () => void; key?: string }) => (
+const Home = ({ onPortfolioClick }: { onPortfolioClick: () => void }) => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
@@ -50,7 +50,7 @@ const Home = ({ onPortfolioClick }: { onPortfolioClick: () => void; key?: string
   </motion.div>
 );
 
-const About = ({}: { key?: string }) => (
+const About = () => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}

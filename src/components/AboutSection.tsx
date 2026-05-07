@@ -16,6 +16,7 @@ export const AboutSection = () => {
                alt="汪汪队记大过" 
                className="w-full h-full object-cover"
                referrerPolicy="no-referrer"
+               loading="lazy"
              />
         </div>
       </div>

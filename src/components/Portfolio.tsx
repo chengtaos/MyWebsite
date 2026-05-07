@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { Zap } from "lucide-react";
 
-const Portfolio = ({}: { key?: string }) => {
+const Portfolio = () => {
   return (
     <div className="pt-40 pb-24 px-8 max-w-7xl mx-auto space-y-16">
       <div className="space-y-4">
