@@ -18,7 +18,7 @@ const Portfolio = () => {
       </div>
 
       {onlineProjects.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="flex flex-wrap justify-center gap-8">
           {onlineProjects.map((project, idx) => (
             <motion.a
               key={project.title}
@@ -29,7 +29,7 @@ const Portfolio = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="brutalist-card p-8 flex flex-col justify-between gap-6 cursor-pointer group hover:bg-brand-yellow/20"
+              className="brutalist-card p-8 flex flex-col justify-between gap-6 cursor-pointer group hover:bg-brand-yellow/20 w-full md:w-[calc(50%-1rem)]"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
@@ -57,7 +57,7 @@ const Portfolio = () => {
       )}
 
       {wipProjects.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="flex flex-wrap justify-center gap-8">
           {wipProjects.map((project, idx) => (
             <motion.div
               key={project.title}
@@ -65,7 +65,7 @@ const Portfolio = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="brutalist-card p-8 flex flex-col gap-6 bg-gray-50 border-dashed"
+              className="brutalist-card p-8 flex flex-col gap-6 bg-gray-50 border-dashed w-full md:w-[calc(50%-1rem)]"
             >
               <div className="space-y-3">
                 <h3 className="text-2xl font-extrabold text-gray-400">

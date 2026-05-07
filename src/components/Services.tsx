@@ -42,7 +42,7 @@ export const Services = () => {
       </div>
 
       {featuredProjects.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="flex flex-wrap justify-center gap-8 max-w-4xl mx-auto">
           {featuredProjects.map((project, idx) => (
             <motion.a
               key={project.title}
@@ -53,7 +53,7 @@ export const Services = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="brutalist-card p-8 flex flex-col justify-between gap-6 cursor-pointer group hover:bg-brand-yellow/20"
+              className="brutalist-card p-8 flex flex-col justify-between gap-6 cursor-pointer group hover:bg-brand-yellow/20 w-full md:w-[calc(50%-1rem)]"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
