@@ -26,22 +26,35 @@
 
 ```
 src/
-├── main.tsx                 # 应用入口
-├── App.tsx                  # 根组件 — 标签页状态管理 + 页面路由
-├── index.css                # Tailwind 配置、品牌主题色、粗野主义工具类
+├── main.tsx                    # 应用入口
+├── App.tsx                     # 根组件 — 标签页状态管理 + 页面路由
+├── index.css                   # Tailwind 配置、品牌主题色、粗野主义工具类
+├── config/
+│   └── site.ts                 # 站点元数据（名称、联系方式、链接）
+├── types/
+│   └── index.ts                # 共享类型定义（TabType 等）
+├── hooks/
+│   └── useScrollReveal.ts      # 滚动入场动画 hook
 ├── data/
-│   ├── projects.ts          # 作品集数据
-│   ├── blogs.ts             # 博客数据
-│   └── ideas.ts             # 有趣想法数据
+│   ├── projects.ts             # 作品集数据
+│   ├── blogs.ts                # 博客数据
+│   └── ideas.ts                # 有趣想法数据
 └── components/
-    ├── Navbar.tsx           # 固定导航栏（首页 / 作品集 / 关于我）
-    ├── Hero.tsx             # 首屏区域 — 标题、CTA 按钮、头像
-    ├── Services.tsx         # 跑马灯滚动条 + 服务展示区
-    ├── AboutSection.tsx     # 关于我 + 个人态度区
-    └── Portfolio.tsx        # 作品集页
+    ├── ui/                     # 共享 UI 原语
+    │   ├── EmptyPlaceholder.tsx # 空状态占位组件
+    │   ├── SectionHeader.tsx   # 区块标题组件
+    │   └── LinkableCard.tsx    # 可选链接卡片组件
+    ├── Navbar.tsx              # 固定导航栏
+    ├── Footer.tsx              # 页脚
+    ├── Hero.tsx                # 首屏区域
+    ├── Ticker.tsx              # 跑马灯滚动条
+    ├── Services.tsx            # 首页创作区块（作品/博客/想法）
+    ├── AboutSection.tsx        # 关于我
+    ├── Experience.tsx          # 个人态度区
+    └── Portfolio.tsx           # 作品集页
 public/
-├── fig1.png                 # 关于我页面插图
-└── fig2.png                 # 首页头像插图
+├── fig1.png
+└── fig2.png
 ```
 
 ## 添加内容

@@ -1,68 +1,17 @@
 import { motion } from "motion/react";
-import { Zap, Globe, Layout, Code, ExternalLink, Pencil, Lightbulb, Briefcase } from "lucide-react";
-import { projects } from "../data/projects.ts";
-import { blogs } from "../data/blogs.ts";
-import { ideas } from "../data/ideas.ts";
-
-const TICKER_ITEMS = [
-  { label: "SPICY FOOD LOVER", Icon: Zap },
-  { label: "HARDCORE SURFING", Icon: Globe },
-  { label: "VIBE CODER", Icon: Layout },
-  { label: "PHOTOGRAPHY", Icon: Zap },
-  { label: "COOK", Icon: Globe },
-] as const;
-
-const MARQUEE_ITEMS = [...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS];
+import { Code, Pencil, Lightbulb, Briefcase } from "lucide-react";
+import { SITE } from "@/src/config/site";
+import { projects } from "@/src/data/projects";
+import { blogs } from "@/src/data/blogs";
+import { ideas } from "@/src/data/ideas";
+import { useScrollReveal } from "@/src/hooks/useScrollReveal";
+import SectionHeader from "@/src/components/ui/SectionHeader";
+import EmptyPlaceholder from "@/src/components/ui/EmptyPlaceholder";
+import LinkableCard from "@/src/components/ui/LinkableCard";
 
 const featuredProjects = projects.filter((p) => p.featured);
 
-export default function Ticker() {
-  return (
-    <div className="bg-black py-8 -mx-8 overflow-hidden -rotate-2 scale-105 border-y-4 border-black">
-      <div className="animate-marquee">
-        {MARQUEE_ITEMS.map((item, idx) => (
-          <div key={idx} className="flex items-center gap-4 px-12 text-white transition-all hover:rotate-2 hover:text-brand-pink cursor-default group">
-            <item.Icon className="w-8 h-8 group-hover:scale-110 transition-transform" />
-            <span className="text-3xl font-extrabold uppercase tracking-tighter">{item.label}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-const EmptyPlaceholder = () => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    className="brutalist-card p-12 md:p-16 flex flex-col items-center text-center space-y-8 bg-gray-50 border-dashed border-4 border-black"
-  >
-    <div className="w-16 h-16 bg-brand-blue border-4 border-black rounded-2xl flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-      <Zap size={32} className="text-white" />
-    </div>
-    <div className="space-y-4">
-      <h3 className="text-4xl font-extrabold italic">"施工中..."</h3>
-      <p className="text-xl text-gray-600 font-bold max-w-lg mx-auto">
-        这里还在施工中，新的小玩意儿正在路上...
-      </p>
-    </div>
-    <div className="flex gap-4">
-      <div className="h-4 w-4 rounded-full bg-brand-pink border-2 border-black" />
-      <div className="h-4 w-4 rounded-full bg-brand-yellow border-2 border-black" />
-      <div className="h-4 w-4 rounded-full bg-brand-blue border-2 border-black" />
-    </div>
-  </motion.div>
-);
-
-const SectionHeader = ({ icon: Icon, title }: { icon: React.ComponentType<{ size?: number; className?: string }>; title: string }) => (
-  <div className="flex items-center gap-3">
-    <Icon size={28} className="text-black shrink-0" />
-    <h3 className="text-3xl font-extrabold">{title}</h3>
-  </div>
-);
-
-export const Services = () => {
+export default function Services() {
   return (
     <section className="py-24 px-8 max-w-7xl mx-auto space-y-20" id="creations">
       <div className="text-center space-y-4">
@@ -80,32 +29,17 @@ export const Services = () => {
         {featuredProjects.length > 0 ? (
           <div className="flex flex-wrap justify-center gap-8">
             {featuredProjects.map((project, idx) => (
-              <motion.a
+              <motion.div
                 key={project.title}
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="brutalist-card p-8 flex flex-col justify-between gap-6 cursor-pointer group hover:bg-brand-yellow/20 w-full md:w-[calc(50%-1rem)]"
+                {...useScrollReveal({ staggerIndex: idx })}
+                className="w-full md:w-[calc(50%-1rem)]"
               >
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-2xl font-extrabold group-hover:underline">
-                      {project.title}
-                    </h4>
-                    <ExternalLink
-                      size={20}
-                      className="text-gray-400 group-hover:text-black transition-colors shrink-0"
-                    />
-                  </div>
+                <LinkableCard href={project.link} title={project.title}>
                   <p className="text-gray-600 font-semibold text-lg leading-relaxed">
                     {project.description}
                   </p>
-                </div>
-              </motion.a>
+                </LinkableCard>
+              </motion.div>
             ))}
           </div>
         ) : (
@@ -118,50 +52,28 @@ export const Services = () => {
         <div className="space-y-8">
           <SectionHeader icon={Pencil} title="博客" />
           <div className="flex flex-wrap justify-center gap-8">
-            {blogs.map((blog, idx) => {
-              const CardWrapper = blog.link ? "a" : "div";
-              const cardProps = blog.link
-                ? { href: blog.link, target: "_blank", rel: "noopener noreferrer" }
-                : {};
-
-              return (
-                <motion.div
-                  key={blog.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="w-full md:w-[calc(50%-1rem)]"
-                >
-                  <CardWrapper
-                    {...cardProps}
-                    className={`brutalist-card p-8 flex flex-col justify-between gap-6 ${
-                      blog.link ? "cursor-pointer group hover:bg-brand-blue/10" : ""
-                    }`}
-                  >
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <h4 className="text-2xl font-extrabold group-hover:underline">
-                          {blog.title}
-                        </h4>
-                        {blog.link && (
-                          <ExternalLink
-                            size={20}
-                            className="text-gray-400 group-hover:text-black transition-colors shrink-0"
-                          />
-                        )}
-                      </div>
-                      <p className="text-gray-600 font-semibold text-lg leading-relaxed">
-                        {blog.summary}
-                      </p>
-                    </div>
+            {blogs.map((blog, idx) => (
+              <motion.div
+                key={blog.title}
+                {...useScrollReveal({ staggerIndex: idx })}
+                className="w-full md:w-[calc(50%-1rem)]"
+              >
+                <LinkableCard
+                  href={blog.link}
+                  title={blog.title}
+                  hoverColor="hover:bg-brand-blue/10"
+                  footer={
                     <span className="text-sm font-bold uppercase tracking-wide text-gray-400">
                       {blog.date}
                     </span>
-                  </CardWrapper>
-                </motion.div>
-              );
-            })}
+                  }
+                >
+                  <p className="text-gray-600 font-semibold text-lg leading-relaxed">
+                    {blog.summary}
+                  </p>
+                </LinkableCard>
+              </motion.div>
+            ))}
           </div>
         </div>
       )}
@@ -174,10 +86,7 @@ export const Services = () => {
             {ideas.map((idea, idx) => (
               <motion.div
                 key={`${idea.content}-${idx}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
+                {...useScrollReveal({ staggerIndex: idx })}
                 className="brutalist-card p-6 flex items-start gap-4 w-full md:w-[calc(50%-0.75rem)] hover:bg-brand-pink/5 transition-colors"
               >
                 <div className="w-8 h-8 bg-brand-yellow border-2 border-black rounded-lg flex items-center justify-center shrink-0">
@@ -204,9 +113,9 @@ export const Services = () => {
         </div>
         <div className="space-y-1">
           <h4 className="text-xl font-extrabold uppercase">最近在捣鼓</h4>
-          <p className="text-gray-600 font-bold text-lg">盲审通过，准备毕业中</p>
+          <p className="text-gray-600 font-bold text-lg">{SITE.status}</p>
         </div>
       </div>
     </section>
   );
-};
+}

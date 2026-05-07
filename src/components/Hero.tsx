@@ -1,82 +1,74 @@
 import { motion } from "motion/react";
 import { Mail, Briefcase } from "lucide-react";
+import { SITE } from "@/src/config/site";
 
 interface HeroProps {
   onPortfolioClick: () => void;
 }
 
-const Hero = ({ onPortfolioClick }: HeroProps) => {
-  const handleEmailClick = () => {
-    window.location.href = 'mailto:2833909302@qq.com';
-  };
-
+export default function Hero({ onPortfolioClick }: HeroProps) {
   return (
     <section className="pt-40 pb-20 px-8 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
       <div className="flex-1 space-y-8">
-        <motion.h1 
+        <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-6xl md:text-8xl font-display font-extrabold leading-tight text-black"
         >
-          <span className="bg-brand-pink px-4 inline-block text-white rounded-lg -rotate-1">探索</span>技术
+          <span className="bg-brand-pink px-4 inline-block text-white rounded-lg -rotate-1">
+            探索
+          </span>
+          技术
           <br />
           与设计的
           <br />
-          <span className="bg-brand-blue px-4 inline-block text-white rounded-lg rotate-1">边界</span>
+          <span className="bg-brand-blue px-4 inline-block text-white rounded-lg rotate-1">
+            边界
+          </span>
         </motion.h1>
-        
-        <motion.p 
+
+        <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="text-xl text-gray-700 max-w-lg leading-relaxed font-semibold italic"
         >
-          这里是汪汪队记大过的个人自留地。关于对这个世界的一点观察。
+          这里是{SITE.name}的个人自留地。关于对这个世界的一点观察。
         </motion.p>
-        
-        <motion.div 
+
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           className="flex flex-wrap gap-6"
         >
-          <button 
-            className="brutalist-button-black" 
-            onClick={onPortfolioClick}
-          >
+          <button className="brutalist-button-black" onClick={onPortfolioClick}>
             <Briefcase size={20} />
             随便看看
           </button>
-          <button 
-            className="brutalist-button-white"
-            onClick={handleEmailClick}
-          >
+          <a className="brutalist-button-white" href={`mailto:${SITE.email}`}>
             <Mail size={20} />
             打个招呼
-          </button>
+          </a>
         </motion.div>
       </div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.9, rotate: 2 }}
-        animate={{ 
-          opacity: 1, 
-          scale: [1, 1.02, 1], 
+        animate={{
+          opacity: 1,
+          scale: [1, 1.02, 1],
           y: [0, -10, 0],
-          rotate: 0 
+          rotate: 0,
         }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
         className="flex-1 relative"
       >
         <div className="w-full aspect-square bg-brand-yellow border-4 border-black rounded-[40px] shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center overflow-hidden">
           <div className="relative w-full h-full">
             <img
-              src="/fig2.png" 
-              alt="汪汪队记大过"
+              src="/fig2.png"
+              alt={SITE.name}
               className="w-full h-full object-cover bg-brand-yellow"
               referrerPolicy="no-referrer"
               loading="lazy"
@@ -86,6 +78,4 @@ const Hero = ({ onPortfolioClick }: HeroProps) => {
       </motion.div>
     </section>
   );
-};
-
-export default Hero;
+}
