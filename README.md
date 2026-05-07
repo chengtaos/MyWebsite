@@ -51,7 +51,8 @@ export interface Project {
   title: string;              // 作品名称
   description: string;        // 一句话描述
   link: string;               // 作品链接（GitHub / 线上地址）
-  status: "online" | "wip";   // online=已上线显示为可点击卡片，wip=显示为施工中占位
+  status: "online" | "wip";   // online=显示为可点击卡片，wip=显示为施工中占位
+  featured?: boolean;         // 设为 true 会同时展示在首页「有趣的创作」区块
 }
 ```
 
@@ -64,6 +65,7 @@ export const projects: Project[] = [
     description: "今天吃什么？一个帮你解决日常选择困难的小工具。",
     link: "https://github.com/chengtaos/What2EatToday",
     status: "online",
+    featured: true,
   },
   {
     title: "新项目",
@@ -74,7 +76,7 @@ export const projects: Project[] = [
 ];
 ```
 
-页面会自动根据 `status` 展示对应的卡片样式。
+页面会自动根据 `status` 展示对应的卡片样式，`featured: true` 的作品会同时出现在首页和作品集页。
 
 ## 路由设计
 

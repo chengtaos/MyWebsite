@@ -3,6 +3,7 @@ export interface Project {
   description: string;
   link: string;
   status: "online" | "wip";
+  featured?: boolean;
 }
 
 export const projects: Project[] = [
@@ -11,5 +12,6 @@ export const projects: Project[] = [
     description: "今天吃什么？一个帮你解决日常选择困难的小工具。",
     link: "https://github.com/chengtaos/What2EaToday",
     status: "online",
+    featured: true,
   },
 ];
