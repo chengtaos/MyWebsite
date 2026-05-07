@@ -103,10 +103,11 @@ export interface Blog {
   date: string;          // "2026-05-07"
   summary: string;
   link?: string;         // 可选外部链接
+  body?: string;         // Markdown 正文
 }
 ```
 
-设置 `link` 后卡片可点击跳转，不设置则只展示文字内容。
+设置 `link` 后卡片可点击跳转。`body` 为 Markdown 格式正文，点击卡片可查看渲染后的内容。
 
 ### 有趣想法 — `src/data/ideas.ts`
 
@@ -114,10 +115,22 @@ export interface Blog {
 export interface Idea {
   content: string;
   date: string;
+  body?: string;         // Markdown 正文
 }
 ```
 
-短想法以简洁卡片样式展示。三个区块中数据为空的会自动隐藏。
+短想法以简洁卡片样式展示。`body` 为 Markdown 格式详情，点击卡片查看。
+
+### Markdown 编辑
+
+页面内置 Markdown 编辑功能，用于在线管理博客和想法内容：
+
+- **开启编辑模式**：按 `Ctrl+Shift+E`，页面顶部会出现编辑模式提示
+- **添加内容**：编辑模式下，博客和想法区块右上角出现 `+` 按钮，点击打开 Markdown 编辑器
+- **编辑/删除**：编辑模式下，鼠标悬停卡片会显示编辑和删除按钮
+- **编辑器功能**：左侧输入 Markdown，点击预览按钮查看实时渲染效果；`Ctrl+Enter` 保存，`Esc` 取消
+- **数据持久化**：所有修改自动保存到浏览器 localStorage，刷新不丢失
+- **重置方式**：清除浏览器 localStorage 即可恢复为默认数据
 
 ## 路由设计
 

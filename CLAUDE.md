@@ -25,6 +25,7 @@ npm run clean        # 删除 dist 目录
 - **动画**: `motion`（原 framer-motion）
 - **图标**: `lucide-react`
 - **AI**: `@google/genai`（Gemini API）
+- **Markdown**: `react-markdown`（博客/想法内容渲染 + 实时预览编辑）
 - **路径别名**: `@/` 映射到项目根目录（通过 Vite alias 和 tsconfig paths）
 
 ## 架构
@@ -32,20 +33,25 @@ npm run clean        # 删除 dist 目录
 ```
 src/
 ├── main.tsx                    # 入口 — 挂载 <App /> 到 #root
-├── App.tsx                     # 根组件 — TabType 状态管理 + AnimatePresence 页面切换
+├── App.tsx                     # 根组件 — TabType 状态管理 + AnimatePresence + EditModeProvider
 ├── index.css                   # Tailwind 导入 + @theme + 粗野主义工具类 + 跑马灯动画
 ├── config/site.ts              # 站点元数据（名称、邮箱、GitHub、状态文字）
 ├── types/index.ts              # TabType 联合类型（"home" | "about" | "portfolio"）
-├── hooks/useScrollReveal.ts    # 滚动入场动画 hook（封装 initial/whileInView/viewport）
+├── hooks/
+│   ├── useScrollReveal.ts      # 滚动入场动画 hook
+│   ├── useEditMode.tsx         # 编辑模式 Context + Ctrl+Shift+E 快捷键
+│   └── useContentStore.ts      # localStorage 内容持久化 hook
 ├── data/
 │   ├── projects.ts             # 作品集数据（Project 接口，支持 featured 标记）
-│   ├── blogs.ts                # 博客数据（Blog 接口，可选外部 link）
-│   └── ideas.ts                # 有趣想法数据（Idea 接口）
+│   ├── blogs.ts                # 博客数据（Blog 接口，body 字段存 Markdown）
+│   └── ideas.ts                # 有趣想法数据（Idea 接口，body 字段存 Markdown）
 └── components/
     ├── ui/                     # 共享 UI 原语
     │   ├── EmptyPlaceholder.tsx # 施工中占位（支持 md/lg 尺寸）
     │   ├── SectionHeader.tsx   # 区块标题（icon + title）
-    │   └── LinkableCard.tsx    # 可选外部链接卡片（a/div 自适应）
+    │   ├── LinkableCard.tsx    # 可选外部链接卡片（a/div 自适应）
+    │   ├── ContentModal.tsx    # Markdown 内容详情弹窗
+    │   └── MarkdownEditor.tsx  # 分栏 Markdown 编辑器（textarea + 实时预览）
     ├── Navbar.tsx              # 固定导航栏 + layoutId 标签页指示器动画
     ├── Footer.tsx              # 页脚（从 SITE 配置读取链接）
     ├── Hero.tsx                # 首屏 — 标题、CTA 按钮、头像浮动动画
@@ -62,7 +68,9 @@ src/
 
 **动画 hook**: `useScrollReveal({ staggerIndex, direction })` 封装了 `initial/whileInView/viewport/transition` 模式，所有卡片列表复用此 hook。
 
-**共享 UI 组件**: `LinkableCard` 自动根据是否传入 `href` 渲染 `<a>` 或 `<div>`；`EmptyPlaceholder` 在作品集和首页复用；`SectionHeader` 统一区块标题样式。
+**共享 UI 组件**: `LinkableCard` 自动根据是否传入 `href` 渲染 `<a>` 或 `<div>`；`EmptyPlaceholder` 在作品集和首页复用；`SectionHeader` 统一区块标题样式；`ContentModal` 展示 Markdown 渲染内容；`MarkdownEditor` 分栏编辑器（textarea + 实时预览）。
+
+**内容管理系统**: `Ctrl+Shift+E` 切换编辑模式。博客/想法通过 `useContentStore` hook 管理，数据持久化到 localStorage（默认值来自 `src/data/`）。编辑模式下支持新增（`+` 按钮）、修改（卡片悬停编辑按钮→MarkdownEditor）、删除。`EditModeProvider` 在 App 根层提供编辑状态上下文。
 
 **环境变量**: `GEMINI_API_KEY` 通过 `vite.config.ts` 中的 `define` 在构建时注入。AI Studio 运行时自动注入密钥。`.env.example` 模板。
 
