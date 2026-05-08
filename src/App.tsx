@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import type { TabType } from "@/types";
-import { EditModeProvider } from "@/hooks/useEditMode";
-import { ContentProvider } from "@/contexts/ContentContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
@@ -38,24 +36,20 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<TabType>("home");
 
   return (
-    <EditModeProvider>
-      <ContentProvider>
-      <div className="min-h-screen relative overflow-x-hidden font-sans">
-        <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
+    <div className="min-h-screen relative overflow-x-hidden font-sans">
+      <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        <main className="container mx-auto px-4">
-          <AnimatePresence mode="wait">
-            {activeTab === "home" && (
-              <Home key="home" onPortfolioClick={() => setActiveTab("portfolio")} />
-            )}
-            {activeTab === "about" && <About key="about" />}
-            {activeTab === "portfolio" && <Portfolio key="portfolio" />}
-          </AnimatePresence>
-        </main>
+      <main className="container mx-auto px-4">
+        <AnimatePresence mode="wait">
+          {activeTab === "home" && (
+            <Home key="home" onPortfolioClick={() => setActiveTab("portfolio")} />
+          )}
+          {activeTab === "about" && <About key="about" />}
+          {activeTab === "portfolio" && <Portfolio key="portfolio" />}
+        </AnimatePresence>
+      </main>
 
-        <Footer />
-      </div>
-      </ContentProvider>
-    </EditModeProvider>
+      <Footer />
+    </div>
   );
 }
