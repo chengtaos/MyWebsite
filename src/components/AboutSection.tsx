@@ -10,7 +10,7 @@ export default function AboutSection() {
       <div className="flex-1">
         <div className="w-full aspect-square bg-brand-pink rounded-full border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden flex items-center justify-center">
           <img
-            src="/fig1.png"
+            src={`${import.meta.env.BASE_URL}fig1.png`}
             alt="汪汪队记大过"
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
