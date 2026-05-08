@@ -1,16 +1,17 @@
 import { motion } from "motion/react";
-import type { TabType, TabConfig } from "@/src/types";
-import { SITE } from "@/src/config/site";
+import type { TabType, TabConfig } from "@/types";
+import { SITE } from "@/config/site";
+import { NAV_LABELS } from "@/constants/text";
 
-interface NavbarProps {
+export interface NavbarProps {
   activeTab: TabType;
   setActiveTab: (tab: TabType) => void;
 }
 
 const NAV_TABS: TabConfig[] = [
-  { id: "home", label: "首页" },
-  { id: "portfolio", label: "作品集" },
-  { id: "about", label: "关于我" },
+  { id: "home", label: NAV_LABELS.home },
+  { id: "portfolio", label: NAV_LABELS.portfolio },
+  { id: "about", label: NAV_LABELS.about },
 ];
 
 export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {

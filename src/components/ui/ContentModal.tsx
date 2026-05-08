@@ -1,16 +1,13 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { X, Edit3, ExternalLink, Check, Undo2 } from "lucide-react";
-import { useEditMode } from "@/src/hooks/useEditMode";
-import MarkdownEditor from "@/src/components/ui/MarkdownEditor";
+import { useEditMode } from "@/hooks/useEditMode";
+import MarkdownEditor from "@/components/ui/MarkdownEditor";
+import type { ContentMeta } from "@/types";
+import { PROSE_CLASSES } from "@/constants/styles";
+import { MARKDOWN, BUTTON } from "@/constants/text";
 
-export interface ContentModalMeta {
-  title: string;
-  date: string;
-  summary?: string;
-}
-
-interface ContentModalProps {
+export interface ContentModalProps {
   title: string;
   date: string;
   body?: string;
@@ -18,7 +15,7 @@ interface ContentModalProps {
   link?: string;
   onClose: () => void;
   onEditBody?: (body: string) => void;
-  onEditMeta?: (meta: ContentModalMeta) => void;
+  onEditMeta?: (meta: ContentMeta) => void;
 }
 
 export default function ContentModal({
@@ -102,10 +99,10 @@ export default function ContentModal({
                 )}
                 <div className="flex gap-2">
                   <button onClick={handleSaveMeta} className="brutalist-button-black text-xs px-3 py-1">
-                    <Check size={14} /> 保存
+                    <Check size={14} /> {BUTTON.save}
                   </button>
                   <button onClick={handleCancelMeta} className="brutalist-button-white text-xs px-3 py-1">
-                    <Undo2 size={14} /> 取消
+                    <Undo2 size={14} /> {BUTTON.cancel}
                   </button>
                 </div>
               </div>
@@ -163,12 +160,12 @@ export default function ContentModal({
         {/* Body */}
         <div className="flex-1 overflow-y-auto p-8">
           {body ? (
-            <div className="prose prose-lg max-w-none font-sans prose-headings:font-display prose-headings:font-extrabold prose-a:text-brand-blue prose-blockquote:border-l-4 prose-blockquote:border-black prose-code:bg-gray-100 prose-code:px-1 prose-code:rounded prose-li:marker:text-black">
+            <div className={PROSE_CLASSES}>
               <ReactMarkdown>{body}</ReactMarkdown>
             </div>
           ) : (
             <p className="text-gray-400 text-lg italic text-center py-12">
-              {editMode ? "点击右上 M 按钮编辑 Markdown 正文" : "暂无详细内容"}
+              {editMode ? MARKDOWN.editHint : MARKDOWN.noContent}
             </p>
           )}
         </div>

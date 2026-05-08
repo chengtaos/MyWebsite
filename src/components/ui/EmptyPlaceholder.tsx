@@ -1,8 +1,8 @@
 import { motion } from "motion/react";
 import { Zap } from "lucide-react";
-import { useScrollReveal } from "@/src/hooks/useScrollReveal";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
-interface EmptyPlaceholderProps {
+export interface EmptyPlaceholderProps {
   size?: "md" | "lg";
 }
 

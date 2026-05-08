@@ -1,8 +1,9 @@
 import { motion } from "motion/react";
 import { Mail, Briefcase } from "lucide-react";
-import { SITE } from "@/src/config/site";
+import { SITE } from "@/config/site";
+import { BUTTON } from "@/constants/text";
 
-interface HeroProps {
+export interface HeroProps {
   onPortfolioClick: () => void;
 }
 
@@ -44,11 +45,11 @@ export default function Hero({ onPortfolioClick }: HeroProps) {
         >
           <button className="brutalist-button-black" onClick={onPortfolioClick}>
             <Briefcase size={20} />
-            随便看看
+            {BUTTON.explore}
           </button>
           <a className="brutalist-button-white" href={`mailto:${SITE.email}`}>
             <Mail size={20} />
-            打个招呼
+            {BUTTON.sayHi}
           </a>
         </motion.div>
       </div>
@@ -72,6 +73,7 @@ export default function Hero({ onPortfolioClick }: HeroProps) {
               className="w-full h-full object-cover bg-brand-yellow"
               referrerPolicy="no-referrer"
               loading="lazy"
+              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
           </div>
         </div>

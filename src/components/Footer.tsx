@@ -1,6 +1,7 @@
 import { Lock, Unlock } from "lucide-react";
-import { SITE } from "@/src/config/site";
-import { useEditMode } from "@/src/hooks/useEditMode";
+import { SITE } from "@/config/site";
+import { useEditMode } from "@/hooks/useEditMode";
+import { EDIT_MODE } from "@/constants/text";
 
 const FOOTER_LINKS = [
   { label: "GitHub", href: SITE.github },
@@ -15,7 +16,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full border-4 border-white flex items-center justify-center font-bold text-2xl text-white">
-            W
+            {SITE.name.charAt(0)}
           </div>
           <p className="text-white text-xl font-bold">{SITE.name}</p>
         </div>
@@ -36,12 +37,12 @@ export default function Footer() {
                 ? "border-brand-pink text-brand-pink bg-brand-pink/20"
                 : "border-white text-white hover:border-brand-yellow hover:text-brand-yellow"
             }`}
-            title={editMode ? "关闭编辑模式" : "开启编辑模式 (Ctrl+Shift+E)"}
+            title={editMode ? EDIT_MODE.toggleOff : EDIT_MODE.toggleOn}
           >
             {editMode ? <Unlock size={18} /> : <Lock size={18} />}
           </button>
         </div>
-        <p className="text-gray-500 font-bold">© 2026 {SITE.name} 个人主页</p>
+        <p className="text-gray-500 font-bold">© {new Date().getFullYear()} {SITE.name} 个人主页</p>
       </div>
     </footer>
   );

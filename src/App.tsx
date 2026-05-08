@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import type { TabType } from "@/src/types";
-import { EditModeProvider } from "@/src/hooks/useEditMode";
-import Navbar from "@/src/components/Navbar";
-import Footer from "@/src/components/Footer";
-import Hero from "@/src/components/Hero";
-import Ticker from "@/src/components/Ticker";
-import Services from "@/src/components/Services";
-import AboutSection from "@/src/components/AboutSection";
-import Experience from "@/src/components/Experience";
-import Portfolio from "@/src/components/Portfolio";
+import type { TabType } from "@/types";
+import { EditModeProvider } from "@/hooks/useEditMode";
+import { ContentProvider } from "@/contexts/ContentContext";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Hero from "@/components/Hero";
+import Ticker from "@/components/Ticker";
+import Services from "@/components/Services";
+import AboutSection from "@/components/AboutSection";
+import Experience from "@/components/Experience";
+import Portfolio from "@/components/Portfolio";
 
-const Home = ({ onPortfolioClick }: { onPortfolioClick: () => void; key?: string }) => (
+const Home = ({ onPortfolioClick }: { onPortfolioClick: () => void }) => (
   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
     <Hero onPortfolioClick={onPortfolioClick} />
     <Ticker />
@@ -21,7 +22,7 @@ const Home = ({ onPortfolioClick }: { onPortfolioClick: () => void; key?: string
   </motion.div>
 );
 
-const About = ({ key: _key }: { key?: string }) => (
+const About = () => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
@@ -38,6 +39,7 @@ export default function App() {
 
   return (
     <EditModeProvider>
+      <ContentProvider>
       <div className="min-h-screen relative overflow-x-hidden font-sans">
         <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
 
@@ -53,6 +55,7 @@ export default function App() {
 
         <Footer />
       </div>
+      </ContentProvider>
     </EditModeProvider>
   );
 }

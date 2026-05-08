@@ -1,6 +1,4 @@
-import { type Variants } from "motion/react";
-
-interface ScrollRevealOptions {
+export interface ScrollRevealOptions {
   delay?: number;
   staggerIndex?: number;
   staggerDelay?: number;

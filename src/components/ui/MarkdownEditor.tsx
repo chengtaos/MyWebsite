@@ -1,19 +1,16 @@
 import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { X, Eye, Edit3 } from "lucide-react";
+import type { ContentMeta } from "@/types";
+import { PROSE_CLASSES } from "@/constants/styles";
+import { MARKDOWN, BUTTON } from "@/constants/text";
 
-export interface MarkdownEditorMeta {
-  title: string;
-  date: string;
-  summary?: string;
-}
-
-interface MarkdownEditorProps {
+export interface MarkdownEditorProps {
   initialBody: string;
   initialTitle?: string;
   initialDate?: string;
   initialSummary?: string;
-  onSave: (body: string, meta?: MarkdownEditorMeta) => void;
+  onSave: (body: string, meta?: ContentMeta) => void;
   onCancel: () => void;
   showMeta?: boolean;
   summaryLabel?: string;
@@ -36,6 +33,22 @@ export default function MarkdownEditor({
   const [preview, setPreview] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Refs to avoid re-registering keyboard listener on every keystroke
+  const bodyRef = useRef(body);
+  const titleRef = useRef(title);
+  const dateRef = useRef(date);
+  const summaryRef = useRef(summary);
+  const showMetaRef = useRef(showMeta);
+  const onSaveRef = useRef(onSave);
+  const onCancelRef = useRef(onCancel);
+  bodyRef.current = body;
+  titleRef.current = title;
+  dateRef.current = date;
+  summaryRef.current = summary;
+  showMetaRef.current = showMeta;
+  onSaveRef.current = onSave;
+  onCancelRef.current = onCancel;
+
   useEffect(() => {
     textareaRef.current?.focus();
   }, []);
@@ -44,17 +57,21 @@ export default function MarkdownEditor({
     const handler = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key === "Enter") {
         e.preventDefault();
-        if (showMeta) {
-          onSave(body, { title, date, summary: summary || undefined });
+        if (showMetaRef.current) {
+          onSaveRef.current(bodyRef.current, {
+            title: titleRef.current,
+            date: dateRef.current,
+            summary: summaryRef.current || undefined,
+          });
         } else {
-          onSave(body);
+          onSaveRef.current(bodyRef.current);
         }
       }
-      if (e.key === "Escape") onCancel();
+      if (e.key === "Escape") onCancelRef.current();
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [body, title, date, summary, showMeta, onSave, onCancel]);
+  }, []);
 
   const handleSave = () => {
     if (showMeta) {
@@ -71,8 +88,8 @@ export default function MarkdownEditor({
         <div className="flex items-center justify-between p-4 border-b-4 border-black bg-gray-50">
           <div className="flex items-center gap-2">
             <Edit3 size={20} className="text-black" />
-            <span className="font-extrabold text-lg">Markdown 编辑器</span>
-            <span className="text-sm text-gray-400 font-semibold ml-2">Ctrl+Enter 保存</span>
+            <span className="font-extrabold text-lg">{MARKDOWN.editorTitle}</span>
+            <span className="text-sm text-gray-400 font-semibold ml-2">{MARKDOWN.ctrlEnterSave}</span>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -82,7 +99,7 @@ export default function MarkdownEditor({
               }`}
             >
               {preview ? <Edit3 size={16} /> : <Eye size={16} />}
-              {preview ? "编辑" : "预览"}
+              {preview ? MARKDOWN.edit : MARKDOWN.preview}
             </button>
             <button
               onClick={onCancel}
@@ -121,7 +138,7 @@ export default function MarkdownEditor({
         <div className="flex-1 flex overflow-hidden">
           {preview ? (
             <div className="flex-1 overflow-y-auto p-8">
-              <div className="prose prose-lg max-w-none font-sans prose-headings:font-display prose-headings:font-extrabold prose-a:text-brand-blue prose-blockquote:border-l-4 prose-blockquote:border-black prose-code:bg-gray-100 prose-code:px-1 prose-code:rounded">
+              <div className={PROSE_CLASSES}>
                 <ReactMarkdown>{body || "*暂无内容*"}</ReactMarkdown>
               </div>
             </div>
@@ -131,7 +148,7 @@ export default function MarkdownEditor({
               value={body}
               onChange={(e) => setBody(e.target.value)}
               className="flex-1 p-8 text-lg resize-none focus:outline-none bg-white"
-              placeholder="在此输入 Markdown 内容..."
+              placeholder={MARKDOWN.placeholder}
             />
           )}
         </div>
@@ -139,10 +156,10 @@ export default function MarkdownEditor({
         {/* Footer */}
         <div className="flex justify-end gap-4 p-4 border-t-4 border-black bg-gray-50">
           <button onClick={onCancel} className="brutalist-button-white text-sm px-6 py-2">
-            取消
+            {BUTTON.cancel}
           </button>
           <button onClick={handleSave} className="brutalist-button-black text-sm px-6 py-2">
-            保存 (Ctrl+Enter)
+            {MARKDOWN.saveHint}
           </button>
         </div>
       </div>

@@ -15,6 +15,7 @@ export default function AboutSection() {
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
             loading="lazy"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
           />
         </div>
       </div>

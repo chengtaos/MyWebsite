@@ -1,8 +1,7 @@
-import { motion } from "motion/react";
-import { projects } from "@/src/data/projects";
-import { useScrollReveal } from "@/src/hooks/useScrollReveal";
-import LinkableCard from "@/src/components/ui/LinkableCard";
-import EmptyPlaceholder from "@/src/components/ui/EmptyPlaceholder";
+import { projects } from "@/data/projects";
+import RevealOnScroll from "@/components/ui/RevealOnScroll";
+import LinkableCard from "@/components/ui/LinkableCard";
+import EmptyPlaceholder from "@/components/ui/EmptyPlaceholder";
 
 const onlineProjects = projects.filter((p) => p.status === "online");
 const wipProjects = projects.filter((p) => p.status === "wip");
@@ -22,9 +21,9 @@ export default function Portfolio() {
       {onlineProjects.length > 0 && (
         <div className="flex flex-wrap justify-center gap-8">
           {onlineProjects.map((project, idx) => (
-            <motion.div
+            <RevealOnScroll
               key={project.title}
-              {...useScrollReveal({ staggerIndex: idx })}
+              staggerIndex={idx}
               className="w-full md:w-[calc(50%-1rem)]"
             >
               <LinkableCard
@@ -43,7 +42,7 @@ export default function Portfolio() {
                   {project.description}
                 </p>
               </LinkableCard>
-            </motion.div>
+            </RevealOnScroll>
           ))}
         </div>
       )}
@@ -51,28 +50,28 @@ export default function Portfolio() {
       {wipProjects.length > 0 && (
         <div className="flex flex-wrap justify-center gap-8">
           {wipProjects.map((project, idx) => (
-            <motion.div
+            <RevealOnScroll
               key={project.title}
-              {...useScrollReveal({ staggerIndex: idx })}
+              staggerIndex={idx}
               className="w-full md:w-[calc(50%-1rem)]"
             >
-              <div className="brutalist-card p-8 flex flex-col gap-6 bg-gray-50 border-dashed">
-                <div className="space-y-3">
-                  <h3 className="text-2xl font-extrabold text-gray-400">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-400 font-semibold text-lg leading-relaxed">
-                    {project.description}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-gray-300 border-2 border-black" />
-                  <span className="text-sm font-bold uppercase tracking-wide text-gray-400">
-                    施工中
-                  </span>
-                </div>
-              </div>
-            </motion.div>
+              <LinkableCard
+                title={project.title}
+                variant="dashed"
+                footer={
+                  <div className="flex items-center gap-2">
+                    <div className="h-3 w-3 rounded-full bg-gray-300 border-2 border-black" />
+                    <span className="text-sm font-bold uppercase tracking-wide text-gray-400">
+                      施工中
+                    </span>
+                  </div>
+                }
+              >
+                <p className="text-gray-400 font-semibold text-lg leading-relaxed">
+                  {project.description}
+                </p>
+              </LinkableCard>
+            </RevealOnScroll>
           ))}
         </div>
       )}
