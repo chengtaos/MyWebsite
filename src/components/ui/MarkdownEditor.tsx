@@ -2,14 +2,37 @@ import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { X, Eye, Edit3 } from "lucide-react";
 
-interface MarkdownEditorProps {
-  initialBody: string;
-  onSave: (body: string) => void;
-  onCancel: () => void;
+export interface MarkdownEditorMeta {
+  title: string;
+  date: string;
+  summary?: string;
 }
 
-export default function MarkdownEditor({ initialBody, onSave, onCancel }: MarkdownEditorProps) {
+interface MarkdownEditorProps {
+  initialBody: string;
+  initialTitle?: string;
+  initialDate?: string;
+  initialSummary?: string;
+  onSave: (body: string, meta?: MarkdownEditorMeta) => void;
+  onCancel: () => void;
+  showMeta?: boolean;
+  summaryLabel?: string;
+}
+
+export default function MarkdownEditor({
+  initialBody,
+  initialTitle = "",
+  initialDate = "",
+  initialSummary = "",
+  onSave,
+  onCancel,
+  showMeta = false,
+  summaryLabel = "摘要",
+}: MarkdownEditorProps) {
   const [body, setBody] = useState(initialBody);
+  const [title, setTitle] = useState(initialTitle);
+  const [date, setDate] = useState(initialDate);
+  const [summary, setSummary] = useState(initialSummary);
   const [preview, setPreview] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -21,13 +44,25 @@ export default function MarkdownEditor({ initialBody, onSave, onCancel }: Markdo
     const handler = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key === "Enter") {
         e.preventDefault();
-        onSave(body);
+        if (showMeta) {
+          onSave(body, { title, date, summary: summary || undefined });
+        } else {
+          onSave(body);
+        }
       }
       if (e.key === "Escape") onCancel();
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [body, onSave, onCancel]);
+  }, [body, title, date, summary, showMeta, onSave, onCancel]);
+
+  const handleSave = () => {
+    if (showMeta) {
+      onSave(body, { title, date, summary: summary || undefined });
+    } else {
+      onSave(body);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
@@ -58,11 +93,35 @@ export default function MarkdownEditor({ initialBody, onSave, onCancel }: Markdo
           </div>
         </div>
 
+        {/* Meta fields */}
+        {showMeta && (
+          <div className="flex flex-wrap gap-4 p-4 border-b-4 border-black bg-gray-50">
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="flex-1 min-w-[200px] text-lg font-extrabold border-2 border-black rounded-lg px-3 py-2 focus:outline-none focus:border-brand-blue"
+              placeholder="标题"
+            />
+            <input
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-44 text-sm font-bold border-2 border-black rounded-lg px-3 py-2 focus:outline-none focus:border-brand-blue"
+              placeholder="日期"
+            />
+            <input
+              value={summary}
+              onChange={(e) => setSummary(e.target.value)}
+              className="flex-1 min-w-[200px] text-base font-semibold border-2 border-black rounded-lg px-3 py-2 focus:outline-none focus:border-brand-blue"
+              placeholder={summaryLabel}
+            />
+          </div>
+        )}
+
         {/* Editor */}
         <div className="flex-1 flex overflow-hidden">
           {preview ? (
             <div className="flex-1 overflow-y-auto p-8">
-              <div className="prose prose-lg max-w-none prose-headings:font-extrabold prose-a:text-brand-blue prose-blockquote:border-l-4 prose-blockquote:border-black prose-code:bg-gray-100 prose-code:px-1 prose-code:rounded">
+              <div className="prose prose-lg max-w-none font-sans prose-headings:font-display prose-headings:font-extrabold prose-a:text-brand-blue prose-blockquote:border-l-4 prose-blockquote:border-black prose-code:bg-gray-100 prose-code:px-1 prose-code:rounded">
                 <ReactMarkdown>{body || "*暂无内容*"}</ReactMarkdown>
               </div>
             </div>
@@ -71,7 +130,7 @@ export default function MarkdownEditor({ initialBody, onSave, onCancel }: Markdo
               ref={textareaRef}
               value={body}
               onChange={(e) => setBody(e.target.value)}
-              className="flex-1 p-8 text-lg font-mono resize-none focus:outline-none bg-white"
+              className="flex-1 p-8 text-lg resize-none focus:outline-none bg-white"
               placeholder="在此输入 Markdown 内容..."
             />
           )}
@@ -82,7 +141,7 @@ export default function MarkdownEditor({ initialBody, onSave, onCancel }: Markdo
           <button onClick={onCancel} className="brutalist-button-white text-sm px-6 py-2">
             取消
           </button>
-          <button onClick={() => onSave(body)} className="brutalist-button-black text-sm px-6 py-2">
+          <button onClick={handleSave} className="brutalist-button-black text-sm px-6 py-2">
             保存 (Ctrl+Enter)
           </button>
         </div>

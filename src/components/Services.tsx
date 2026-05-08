@@ -11,7 +11,7 @@ import SectionHeader from "@/src/components/ui/SectionHeader";
 import EmptyPlaceholder from "@/src/components/ui/EmptyPlaceholder";
 import LinkableCard from "@/src/components/ui/LinkableCard";
 import ContentModal from "@/src/components/ui/ContentModal";
-import MarkdownEditor from "@/src/components/ui/MarkdownEditor";
+import MarkdownEditor, { type MarkdownEditorMeta } from "@/src/components/ui/MarkdownEditor";
 
 const featuredProjects = projects.filter((p) => p.featured);
 
@@ -42,9 +42,14 @@ export default function Services() {
     }
   };
 
-  const handleAddBlog = (body: string) => {
+  const handleAddBlog = (body: string, meta?: MarkdownEditorMeta) => {
     const today = new Date().toISOString().slice(0, 10);
-    addBlog({ title: "新博客", date: today, summary: "点击编辑按钮修改标题和摘要", body });
+    addBlog({
+      title: meta?.title || "新博客",
+      date: meta?.date || today,
+      summary: meta?.summary || "",
+      body,
+    });
     setAddingType(null);
   };
 
@@ -68,9 +73,13 @@ export default function Services() {
     }
   };
 
-  const handleAddIdea = (body: string) => {
+  const handleAddIdea = (body: string, meta?: MarkdownEditorMeta) => {
     const today = new Date().toISOString().slice(0, 10);
-    addIdea({ content: "新想法", date: today, body });
+    addIdea({
+      content: meta?.title || "新想法",
+      date: meta?.date || today,
+      body,
+    });
     setAddingType(null);
   };
 
@@ -337,10 +346,26 @@ export default function Services() {
       )}
 
       {addingType === "blog" && (
-        <MarkdownEditor initialBody="" onSave={handleAddBlog} onCancel={() => setAddingType(null)} />
+        <MarkdownEditor
+          initialBody=""
+          initialTitle="新博客"
+          initialDate={new Date().toISOString().slice(0, 10)}
+          onSave={handleAddBlog}
+          onCancel={() => setAddingType(null)}
+          showMeta
+          summaryLabel="摘要"
+        />
       )}
       {addingType === "idea" && (
-        <MarkdownEditor initialBody="" onSave={handleAddIdea} onCancel={() => setAddingType(null)} />
+        <MarkdownEditor
+          initialBody=""
+          initialTitle="新想法"
+          initialDate={new Date().toISOString().slice(0, 10)}
+          onSave={handleAddIdea}
+          onCancel={() => setAddingType(null)}
+          showMeta
+          summaryLabel="描述"
+        />
       )}
     </>
   );
