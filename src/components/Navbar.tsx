@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import type { TabType, TabConfig } from "@/types";
+import type { TabType } from "@/types";
 import { SITE } from "@/config/site";
 import { NAV_LABELS } from "@/constants/text";
 
@@ -8,7 +8,7 @@ export interface NavbarProps {
   setActiveTab: (tab: TabType) => void;
 }
 
-const NAV_TABS: TabConfig[] = [
+const TABS: { id: TabType; label: (typeof NAV_LABELS)[keyof typeof NAV_LABELS] }[] = [
   { id: "home", label: NAV_LABELS.home },
   { id: "portfolio", label: NAV_LABELS.portfolio },
   { id: "about", label: NAV_LABELS.about },
@@ -31,7 +31,7 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
         </div>
 
         <div className="flex items-center gap-6 md:gap-8">
-          {NAV_TABS.map((tab) => (
+          {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}

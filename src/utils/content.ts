@@ -1,29 +1,20 @@
 import type { Blog, Idea } from "@/types";
 
-// --- frontmatter parser ---
-
-interface Frontmatter {
-  title: string;
-  date: string;
-  summary?: string;
-  link?: string;
-  body: string;
+function filename(path: string): string {
+  return path.split("/").pop()!.replace(/\.md$/, "");
 }
 
-function parseFrontmatter(raw: string, filename: string): Frontmatter {
+function parseFrontmatter(raw: string, fallbackTitle: string) {
   const trimmed = raw.trim();
   if (!trimmed.startsWith("---")) {
-    return { title: filename, date: "", body: trimmed };
+    return { title: fallbackTitle, date: "", summary: "", link: "", body: trimmed };
   }
-
-  const second = trimmed.indexOf("---", 3);
-  if (second === -1) {
-    return { title: filename, date: "", body: trimmed.slice(3).trim() };
+  const end = trimmed.indexOf("---", 3);
+  if (end === -1) {
+    return { title: fallbackTitle, date: "", summary: "", link: "", body: trimmed.slice(3).trim() };
   }
-
-  const fmBlock = trimmed.slice(3, second);
-  const body = trimmed.slice(second + 3).trim();
-
+  const fmBlock = trimmed.slice(3, end);
+  const body = trimmed.slice(end + 3).trim();
   const meta: Record<string, string> = {};
   for (const line of fmBlock.split("\n")) {
     const colon = line.indexOf(":");
@@ -32,55 +23,46 @@ function parseFrontmatter(raw: string, filename: string): Frontmatter {
     const value = line.slice(colon + 1).trim();
     if (key) meta[key] = value;
   }
-
   return {
-    title: meta.title || filename,
+    title: meta.title || fallbackTitle,
     date: meta.date || "",
-    summary: meta.summary,
-    link: meta.link,
+    summary: meta.summary || "",
+    link: meta.link || "",
     body,
   };
 }
 
-// --- glob loaders ---
-
-const blogGlob = import.meta.glob("/content/blogs/*.md", {
-  query: "?raw",
-  import: "default",
-  eager: true,
-});
-
-const ideaGlob = import.meta.glob("/content/ideas/*.md", {
-  query: "?raw",
-  import: "default",
-  eager: true,
-});
-
-function filename(path: string): string {
-  return path.split("/").pop()!.replace(/\.md$/, "");
-}
-
-// --- public API ---
-
 export function loadBlogs(): Blog[] {
-  return Object.entries(blogGlob).map(([path, raw]) => {
-    const fm = parseFrontmatter(raw as string, filename(path));
+  const modules = import.meta.glob("/content/blogs/*.md", {
+    query: "?raw",
+    import: "default",
+    eager: true,
+  });
+  return Object.entries(modules).map(([path, raw]) => {
+    const id = filename(path);
+    const fm = parseFrontmatter(raw as string, id);
     return {
-      id: filename(path),
+      id,
       title: fm.title,
       date: fm.date,
-      summary: fm.summary || "",
+      summary: fm.summary,
       body: fm.body,
-      link: fm.link,
+      link: fm.link || undefined,
     };
   });
 }
 
 export function loadIdeas(): Idea[] {
-  return Object.entries(ideaGlob).map(([path, raw]) => {
-    const fm = parseFrontmatter(raw as string, filename(path));
+  const modules = import.meta.glob("/content/ideas/*.md", {
+    query: "?raw",
+    import: "default",
+    eager: true,
+  });
+  return Object.entries(modules).map(([path, raw]) => {
+    const id = filename(path);
+    const fm = parseFrontmatter(raw as string, id);
     return {
-      id: filename(path),
+      id,
       content: fm.title,
       date: fm.date,
       body: fm.body,

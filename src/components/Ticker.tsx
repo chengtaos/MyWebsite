@@ -8,7 +8,7 @@ const TICKER_ITEMS = [
   { label: "COOK", Icon: Globe },
 ] as const;
 
-const MARQUEE_ITEMS = [...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS];
+const MARQUEE_ITEMS = Array.from({ length: 4 }, () => TICKER_ITEMS).flat();
 
 export default function Ticker() {
   return (

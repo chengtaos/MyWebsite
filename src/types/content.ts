@@ -13,9 +13,3 @@ export interface Blog extends ContentItem {
 export interface Idea extends ContentItem {
   content: string;
 }
-
-export interface ContentMeta {
-  title: string;
-  date: string;
-  summary?: string;
-}

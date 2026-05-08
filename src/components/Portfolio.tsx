@@ -2,6 +2,7 @@ import { projects } from "@/data/projects";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import LinkableCard from "@/components/ui/LinkableCard";
 import EmptyPlaceholder from "@/components/ui/EmptyPlaceholder";
+import { STATUS } from "@/constants/text";
 
 const onlineProjects = projects.filter((p) => p.status === "online");
 const wipProjects = projects.filter((p) => p.status === "wip");
@@ -33,7 +34,7 @@ export default function Portfolio() {
                   <div className="flex items-center gap-2">
                     <div className="h-3 w-3 rounded-full bg-brand-yellow border-2 border-black" />
                     <span className="text-sm font-bold uppercase tracking-wide text-gray-500">
-                      已上线
+                      {STATUS.online}
                     </span>
                   </div>
                 }
@@ -62,7 +63,7 @@ export default function Portfolio() {
                   <div className="flex items-center gap-2">
                     <div className="h-3 w-3 rounded-full bg-gray-300 border-2 border-black" />
                     <span className="text-sm font-bold uppercase tracking-wide text-gray-400">
-                      施工中
+                      {STATUS.wip}
                     </span>
                   </div>
                 }

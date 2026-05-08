@@ -1,2 +1,2 @@
-export type { TabType, TabConfig } from "./tab";
-export type { ContentItem, Blog, Idea, ContentMeta } from "./content";
+export type { TabType } from "./tab";
+export type { Blog, Idea } from "./content";

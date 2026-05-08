@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { Mail, Briefcase } from "lucide-react";
 import { SITE } from "@/config/site";
 import { BUTTON } from "@/constants/text";
+import OptimizedImage from "@/components/ui/OptimizedImage";
 
 export interface HeroProps {
   onPortfolioClick: () => void;
@@ -67,13 +68,10 @@ export default function Hero({ onPortfolioClick }: HeroProps) {
       >
         <div className="w-full aspect-square bg-brand-yellow border-4 border-black rounded-[40px] shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center overflow-hidden">
           <div className="relative w-full h-full">
-            <img
-              src={`${import.meta.env.BASE_URL}fig2.png`}
+            <OptimizedImage
+              src="fig2.png"
               alt={SITE.name}
               className="w-full h-full object-cover bg-brand-yellow"
-              referrerPolicy="no-referrer"
-              loading="lazy"
-              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { motion } from "motion/react";
 import { Zap } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { PLACEHOLDER } from "@/constants/text";
 
 export interface EmptyPlaceholderProps {
   size?: "md" | "lg";
@@ -26,9 +27,9 @@ export default function EmptyPlaceholder({ size = "md" }: EmptyPlaceholderProps)
         <Zap size={s.iconSize} className="text-white" />
       </div>
       <div className="space-y-4">
-        <h3 className="text-4xl font-extrabold italic">"施工中..."</h3>
+        <h3 className="text-4xl font-extrabold italic">"{PLACEHOLDER.title}"</h3>
         <p className="text-xl text-gray-600 font-bold max-w-lg mx-auto">
-          这里还在施工中，新的小玩意儿正在路上...
+          {PLACEHOLDER.message}
         </p>
       </div>
       <div className="flex gap-4">
