@@ -5,6 +5,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   base: '/MyWebsite/',
+  build: { outDir: 'docs' },
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
