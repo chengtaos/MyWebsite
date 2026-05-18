@@ -2,6 +2,7 @@ import { useState } from "react";
 import { projects } from "@/data/projects";
 import { loadBlogs, loadIdeas } from "@/utils/content";
 import ProjectSection from "@/components/Home/ProjectSection";
+import PhotographySection from "@/components/Home/PhotographySection";
 import BlogSection from "@/components/Home/BlogSection";
 import IdeaSection from "@/components/Home/IdeaSection";
 import StatusBar from "@/components/Home/StatusBar";
@@ -35,6 +36,8 @@ export default function Services() {
         </div>
 
         <ProjectSection projects={featuredProjects} />
+
+        <PhotographySection />
 
         <BlogSection
           blogs={blogs}

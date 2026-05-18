@@ -8,7 +8,7 @@ export default function StatusBar() {
         <Code size={32} className="text-black" />
       </div>
       <div className="space-y-1 flex-1 min-w-0">
-        <h4 className="text-xl font-extrabold uppercase">最近在捣鼓</h4>
+        <h4 className="text-xl font-extrabold uppercase">近期在做</h4>
         <p className="text-gray-600 font-bold text-lg">
           {SITE.status}
         </p>
