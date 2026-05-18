@@ -5,14 +5,44 @@ import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { albums } from "@/data/photos";
 
-const SIZES = [
-  { w: 180, h: 220, r: -3 },
-  { w: 200, h: 160, r: 2 },
-  { w: 160, h: 200, r: -1 },
-  { w: 220, h: 180, r: 4 },
-  { w: 180, h: 180, r: -2 },
-  { w: 200, h: 220, r: 1 },
+const PHOTO_LAYOUTS = [
+  { w: 180, h: 220, rotate: -3 },
+  { w: 200, h: 160, rotate: 2 },
+  { w: 160, h: 200, rotate: -1 },
+  { w: 220, h: 180, rotate: 4 },
+  { w: 180, h: 180, rotate: -2 },
+  { w: 200, h: 220, rotate: 1 },
 ];
+
+function PhotoCard({ src, alt, layout }: { src: string; alt: string; layout: (typeof PHOTO_LAYOUTS)[number] }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8, rotate: layout.rotate }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="relative cursor-pointer bg-white border-4 border-black rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-hidden transition-all duration-500 ease-out hover:z-50"
+      style={{ width: layout.w, height: layout.h, rotate: `${layout.rotate}deg` }}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget;
+        el.style.rotate = "0deg";
+        el.style.transform = "scale(2.2)";
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget;
+        el.style.rotate = `${layout.rotate}deg`;
+        el.style.transform = "scale(1)";
+      }}
+    >
+      <img
+        src={src}
+        alt={alt}
+        className="w-full h-full object-cover pointer-events-none"
+        loading="lazy"
+        referrerPolicy="no-referrer"
+      />
+    </motion.div>
+  );
+}
 
 export default function PhotographySection() {
   const [openAlbum, setOpenAlbum] = useState<string | null>(null);
@@ -25,13 +55,9 @@ export default function PhotographySection() {
         {albums.map((album, albumIdx) => {
           const isOpen = openAlbum === album.name;
           return (
-            <RevealOnScroll
-              key={album.name}
-              staggerIndex={albumIdx}
-              className="w-full"
-            >
+            <RevealOnScroll key={album.name} staggerIndex={albumIdx} className="w-full">
               <div className="max-w-4xl mx-auto">
-                {/* Album cover card */}
+
                 <button
                   onClick={() => setOpenAlbum(isOpen ? null : album.name)}
                   className={`brutalist-card w-full text-left transition-all duration-300 group ${
@@ -59,16 +85,11 @@ export default function PhotographySection() {
                       transition={{ duration: 0.3 }}
                       className="shrink-0"
                     >
-                      {isOpen ? (
-                        <X size={24} className="text-brand-pink" />
-                      ) : (
-                        <ChevronDown size={24} />
-                      )}
+                      {isOpen ? <X size={24} className="text-brand-pink" /> : <ChevronDown size={24} />}
                     </motion.div>
                   </div>
                 </button>
 
-                {/* Expanded photos */}
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
@@ -78,45 +99,19 @@ export default function PhotographySection() {
                       transition={{ duration: 0.4, ease: "easeOut" }}
                     >
                       <div className="flex flex-wrap justify-center items-center gap-5 py-12">
-                        {album.photos.map((photo, idx) => {
-                          const sz = SIZES[idx % SIZES.length];
-                          return (
-                            <motion.div
-                              key={photo.src}
-                              initial={{ opacity: 0, scale: 0.8, rotate: sz.r }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: idx * 0.08, duration: 0.4, ease: "easeOut" }}
-                              className="relative cursor-pointer bg-white border-4 border-black rounded-2xl shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] overflow-hidden transition-all duration-500 ease-out hover:z-50"
-                              style={{
-                                width: sz.w,
-                                height: sz.h,
-                                rotate: `${sz.r}deg`,
-                              }}
-                              onMouseEnter={(e) => {
-                                const el = e.currentTarget;
-                                el.style.rotate = "0deg";
-                                el.style.transform = "scale(2.2)";
-                              }}
-                              onMouseLeave={(e) => {
-                                const el = e.currentTarget;
-                                el.style.rotate = `${sz.r}deg`;
-                                el.style.transform = "scale(1)";
-                              }}
-                            >
-                              <img
-                                src={photo.src}
-                                alt={photo.alt}
-                                className="w-full h-full object-cover pointer-events-none"
-                                loading="lazy"
-                                referrerPolicy="no-referrer"
-                              />
-                            </motion.div>
-                          );
-                        })}
+                        {album.photos.map((photo, idx) => (
+                          <PhotoCard
+                            key={photo.src}
+                            src={photo.src}
+                            alt={photo.alt}
+                            layout={PHOTO_LAYOUTS[idx % PHOTO_LAYOUTS.length]}
+                          />
+                        ))}
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
+
               </div>
             </RevealOnScroll>
           );

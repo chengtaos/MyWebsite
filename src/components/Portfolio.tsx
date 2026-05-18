@@ -1,3 +1,4 @@
+import type { Project } from "@/data/projects";
 import { projects } from "@/data/projects";
 import RevealOnScroll from "@/components/ui/RevealOnScroll";
 import LinkableCard from "@/components/ui/LinkableCard";
@@ -6,6 +7,45 @@ import { STATUS } from "@/constants/text";
 
 const onlineProjects = projects.filter((p) => p.status === "online");
 const wipProjects = projects.filter((p) => p.status === "wip");
+
+function ProjectGrid({ items, variant }: { items: Project[]; variant?: "dashed" }) {
+  if (items.length === 0) return null;
+
+  const isWip = variant === "dashed";
+  const dotColor = isWip ? "bg-gray-300" : "bg-brand-yellow";
+  const textColor = isWip ? "text-gray-400" : "text-gray-500";
+  const descColor = isWip ? "text-gray-400" : "text-gray-600";
+
+  return (
+    <div className="flex flex-wrap justify-center gap-8">
+      {items.map((project, idx) => (
+        <RevealOnScroll
+          key={project.title}
+          staggerIndex={idx}
+          className="w-full md:w-[calc(50%-1rem)]"
+        >
+          <LinkableCard
+            href={isWip ? undefined : project.link}
+            title={project.title}
+            variant={variant}
+            footer={
+              <div className="flex items-center gap-2">
+                <div className={`h-3 w-3 rounded-full ${dotColor} border-2 border-black`} />
+                <span className={`text-sm font-bold uppercase tracking-wide ${textColor}`}>
+                  {isWip ? STATUS.wip : STATUS.online}
+                </span>
+              </div>
+            }
+          >
+            <p className={`${descColor} font-semibold text-lg leading-relaxed`}>
+              {project.description}
+            </p>
+          </LinkableCard>
+        </RevealOnScroll>
+      ))}
+    </div>
+  );
+}
 
 export default function Portfolio() {
   return (
@@ -19,63 +59,8 @@ export default function Portfolio() {
         </p>
       </div>
 
-      {onlineProjects.length > 0 && (
-        <div className="flex flex-wrap justify-center gap-8">
-          {onlineProjects.map((project, idx) => (
-            <RevealOnScroll
-              key={project.title}
-              staggerIndex={idx}
-              className="w-full md:w-[calc(50%-1rem)]"
-            >
-              <LinkableCard
-                href={project.link}
-                title={project.title}
-                footer={
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 w-3 rounded-full bg-brand-yellow border-2 border-black" />
-                    <span className="text-sm font-bold uppercase tracking-wide text-gray-500">
-                      {STATUS.online}
-                    </span>
-                  </div>
-                }
-              >
-                <p className="text-gray-600 font-semibold text-lg leading-relaxed">
-                  {project.description}
-                </p>
-              </LinkableCard>
-            </RevealOnScroll>
-          ))}
-        </div>
-      )}
-
-      {wipProjects.length > 0 && (
-        <div className="flex flex-wrap justify-center gap-8">
-          {wipProjects.map((project, idx) => (
-            <RevealOnScroll
-              key={project.title}
-              staggerIndex={idx}
-              className="w-full md:w-[calc(50%-1rem)]"
-            >
-              <LinkableCard
-                title={project.title}
-                variant="dashed"
-                footer={
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 w-3 rounded-full bg-gray-300 border-2 border-black" />
-                    <span className="text-sm font-bold uppercase tracking-wide text-gray-400">
-                      {STATUS.wip}
-                    </span>
-                  </div>
-                }
-              >
-                <p className="text-gray-400 font-semibold text-lg leading-relaxed">
-                  {project.description}
-                </p>
-              </LinkableCard>
-            </RevealOnScroll>
-          ))}
-        </div>
-      )}
+      <ProjectGrid items={onlineProjects} />
+      <ProjectGrid items={wipProjects} variant="dashed" />
 
       {projects.length === 0 && <EmptyPlaceholder size="lg" />}
     </div>

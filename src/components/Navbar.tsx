@@ -7,7 +7,7 @@ export interface NavbarProps {
   setActiveTab: (tab: TabType) => void;
 }
 
-const TABS: { id: TabType; label: (typeof NAV_LABELS)[keyof typeof NAV_LABELS] }[] = [
+const TABS: { id: TabType; label: string }[] = [
   { id: "home", label: NAV_LABELS.home },
   { id: "portfolio", label: NAV_LABELS.portfolio },
   { id: "about", label: NAV_LABELS.about },
