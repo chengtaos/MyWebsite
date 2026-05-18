@@ -69,7 +69,7 @@ export default function Hero({ onPortfolioClick }: HeroProps) {
         <div className="w-full aspect-square bg-brand-yellow border-4 border-black rounded-[40px] shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center overflow-hidden">
           <div className="relative w-full h-full">
             <OptimizedImage
-              src="fig2.png"
+              src="https://i.postimg.cc/fRBNbq50/fig2.png"
               alt={SITE.name}
               className="w-full h-full object-cover bg-brand-yellow"
             />

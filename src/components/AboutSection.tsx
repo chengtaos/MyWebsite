@@ -10,11 +10,11 @@ export default function AboutSection() {
   return (
     <section className="py-24 px-8 max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
       <div className="flex-1">
-        <div className="w-full aspect-square bg-brand-pink rounded-full border-4 border-black shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] relative overflow-hidden flex items-center justify-center">
+        <div className="w-full aspect-square bg-brand-yellow border-4 border-black rounded-[40px] shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center overflow-hidden">
           <OptimizedImage
-            src="fig1.png"
+            src="https://i.postimg.cc/PqYP9jTR/fig1.png"
             alt="汪汪队记大过"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover bg-brand-yellow"
           />
         </div>
       </div>

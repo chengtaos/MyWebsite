@@ -5,9 +5,10 @@ export interface OptimizedImageProps {
 }
 
 export default function OptimizedImage({ src, alt, className }: OptimizedImageProps) {
+  const finalSrc = src.startsWith("http") ? src : `${import.meta.env.BASE_URL}${src}`;
   return (
     <img
-      src={`${import.meta.env.BASE_URL}${src}`}
+      src={finalSrc}
       alt={alt}
       className={className}
       referrerPolicy="no-referrer"
